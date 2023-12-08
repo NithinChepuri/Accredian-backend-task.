@@ -8,7 +8,13 @@ const app = express();
 
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(bodyParser.json());
-app.use(cors());
+
+// Update CORS configuration for your Vercel frontend
+app.use(cors({
+  origin: 'https://accredian-frontend-task-m76i53w4d-nithinchepuris-projects.vercel.app',
+  methods: 'GET,HEAD,PUT,PATCH,POST,DELETE',
+  credentials: true,
+}));
 
 const connection = mysql.createConnection({
   host: 'localhost',
@@ -25,9 +31,7 @@ connection.connect((err) => {
   console.log('Connected to MySQL');
 });
 
-// ... (previous imports and setup)
-
-// ... (your existing imports)
+// Signup route
 app.post('/signup', async (req, res) => {
   const { username, email, password } = req.body;
 
@@ -76,18 +80,9 @@ app.post('/signup', async (req, res) => {
       }
     });
   });
-
 });
 
-
-
-
-// ... (other routes and server setup)
-
-
-// ... (other routes and server setup)
-
-
+// Login route
 app.post('/login', async (req, res) => {
   const { usernameOrEmail, password } = req.body;
 
@@ -115,9 +110,9 @@ app.post('/login', async (req, res) => {
   });
 });
 
-// ... other routes
+// Other routes...
 
-const PORT = 3001;
+const PORT = process.env.PORT || 3001;
 app.listen(PORT, () => {
   console.log(`Server is running on port ${PORT}`);
 });
